@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="referrer" content="no-referrer"/><title>Integrating new objective functions · Disentanglers.jl</title><meta name="title" content="Integrating new objective functions · Disentanglers.jl"/><meta property="og:title" content="Integrating new objective functions · Disentanglers.jl"/><meta property="twitter:title" content="Integrating new objective functions · Disentanglers.jl"/><meta name="description" content="Documentation for Disentanglers.jl."/><meta property="og:description" content="Documentation for Disentanglers.jl."/><meta property="twitter:description" content="Documentation for Disentanglers.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.63.2/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../index.html"><img src="../assets/logo.gif" alt="Disentanglers.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../index.html">Disentanglers.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../index.html">Introduction</a></li><li><span class="tocitem">Disentangling Algorithms</span><ul><li><a class="tocitem" href="../algos/reimannian_solvers.html">Riemannian solvers</a></li><li><a class="tocitem" href="../algos/tensor_sketch.html">Tensor sketching</a></li><li><a class="tocitem" href="../algos/evenbly_vidal.html">Evenbly-Vidal</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../ex/state_preparation.html">State preparation</a></li><li><a class="tocitem" href="../ex/unitary_compression.html">Unitary compression</a></li><li><a class="tocitem" href="../ex/lpdo_optimization.html">LPDO optimization</a></li></ul></li><li><a class="tocitem" href="../profiling/profiling.html">Profiling disentanglers</a></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../api/optimization_functions.html">Optimization functions</a></li><li><a class="tocitem" href="../api/utilities.html">Utility functions</a></li></ul></li><li><span class="tocitem">Future Directions</span><ul><li class="is-active"><a class="tocitem" href="integrating_new_obj_funcs.html">Integrating new objective functions</a></li><li><a class="tocitem" href="gpu_integration.html">GPU Integration</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Future Directions</a></li><li class="is-active"><a href="integrating_new_obj_funcs.html">Integrating new objective functions</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href="integrating_new_obj_funcs.html">Integrating new objective functions</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/amitjamadagni/Disentanglers.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/amitjamadagni/Disentanglers.jl/blob/master/docs/src/fd/integrating_new_obj_funcs.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Integratingnewobjfuncs"><a class="docs-heading-anchor" href="#Integratingnewobjfuncs">Integrating new objective functions</a><a id="Integratingnewobjfuncs-1"></a><a class="docs-heading-anchor-permalink" href="#Integratingnewobjfuncs" title="Permalink"></a></h1><p>We now present ways in which new objective functions can be integrated into the package. It demands defining the following functions:</p><ul><li>Objective function,</li><li>Derivative of the objective function,</li><li>Optimization function that calls the objective and its derivative</li></ul><p>As an example, we integrate the (in)fidelity between two wavefunctions, ψ and ϕ <span>$1 - |&lt;ψ|ϕ&gt;|^2$</span> as the objective function:</p><p>We define the objective function as follows:</p><pre><code class="language-julia hljs">function overlap(M, W, composite_tensor_arr, psi_arr, i, eta_dag_arr, dim_left_index, dim_right_index, dim_left_neighbors, dim_right_neighbors; Λ_cutoff = 1.0e-8, kwargs...)
+
+    dim_combined_index = dim_left_index * dim_right_index
+
+    # permute this to have k_ij, chi_i, s_i, s_j, chi_j -&gt; this is the input!
+    # should receive a permuted tensor with combined_index followed by the rest of indices as input!
+    # composite_tensor_arr = Array(composite_tensor.tensor)
+
+    # reshape to get the matrix with structure: combined_index × rest of the indices
+    total_env_dim = prod(dim_left_neighbors) * prod(dim_right_neighbors)
+    composite_tensor_arr = reshape(composite_tensor_arr, dim_combined_index, total_env_dim)
+
+    # now act with W (the isometry) from the left!
+    composite_tensor_arr_n = W * composite_tensor_arr
+
+    # now reshape this to split the combined index -&gt; combined index = left index × right index
+    composite_tensor_arr_r = reshape(composite_tensor_arr_n, dim_left_index, dim_right_index, total_env_dim)
+
+    # move the right index to the right
+    composite_tensor_arr_p = permutedims(composite_tensor_arr_r, (1, 3, 2))
+
+    # reshape with left indices and its neighbors on one side, right indices and its neighbors on the other
+    # composite_tensor_arr_p = reshape(composite_tensor_arr_p, dim_left_index*prod(dim_left_neighbors), prod(dim_right_neighbors)*dim_right_index)
+
+    # custom inner requires an array with left_link = sites = right_link
+    if i == 1
+
+        composite_tensor_arr_p = reshape(composite_tensor_arr_p, dim_left_index, prod(dim_right_neighbors), dim_right_index)
+        composite_tensor_arr_p = permutedims(composite_tensor_arr_p, (1, 3, 2))
+        return 1 - abs(inner_custom(composite_tensor_arr_p, i, psi_arr, eta_dag_arr))^2
+
+    elseif i == length(psi_arr) - 1
+
+        composite_tensor_arr_p = reshape(composite_tensor_arr_p, dim_left_index, prod(dim_left_neighbors), dim_right_index)
+        composite_tensor_arr_p = permutedims(composite_tensor_arr_p, (2, 1, 3))
+        return 1 - abs(inner_custom(composite_tensor_arr_p, i, psi_arr, eta_dag_arr))^2
+
+    else
+
+        composite_tensor_arr_p = reshape(composite_tensor_arr_p, dim_left_index, prod(dim_left_neighbors), prod(dim_right_neighbors), dim_right_index)
+        composite_tensor_arr_p = permutedims(composite_tensor_arr_p, (2, 1, 4, 3))
+        return 1 - abs(inner_custom(composite_tensor_arr_p, i, psi_arr, eta_dag_arr))^2
+
+    end
+
+end</code></pre><p>Define its numerical derivative as follows:</p><pre><code class="language-julia hljs">function grad_mat_overlap(M, p, composite_tensor, psi_arr, i, eta_dag_arr, left_index, right_index, dim_left_neighbors, dim_right_neighbors; kwargs...)
+
+    target_f(p) = overlap(M, p, composite_tensor, psi_arr, i, eta_dag_arr, left_index, right_index, dim_left_neighbors, dim_right_neighbors; kwargs...)
+
+    backend = AutoZygote()
+
+    grad = DifferentiationInterface.gradient(target_f, backend, p)
+
+    return grad
+
+end</code></pre><p>Finally integrate the above functions into the optimization function:</p><pre><code class="language-julia hljs">function isometry_overlap(composite_object, psi_arr, i, eta_dag_arr, left_index, right_index, left_neighbors, right_neighbors; λ_cutoff = 1.0e-8, manifold = Stiefel, manifold_field = ℂ, opt = quasi_Newton, initial_p0 = &quot;RS&quot;, kwargs...)
+
+    ##################
+
+    combined_tensor = combiner(left_index, right_index; tags = &quot;comb&quot;)
+    combined_index = combinedind(combined_tensor)
+    composite_tensor = composite_object * combined_tensor
+
+    # permute to get the combined_index to the beginning!
+    # ordering is crucial to compute the right entropy at the right cut!
+    ordering_indices = [combined_index]
+    if length(left_neighbors) != 0
+        append!(ordering_indices, left_neighbors)
+    end
+    if length(right_neighbors) != 0
+        append!(ordering_indices, right_neighbors)
+    end
+
+    # permute with combined index at the start
+    composite_tensor = permute(composite_tensor, ordering_indices)
+
+    if length(left_neighbors) != 0
+        dim_left_neighbors = [dim(ln) for ln in left_neighbors]
+    else
+        dim_left_neighbors = [1]
+    end
+
+    if length(right_neighbors) != 0
+        dim_right_neighbors = [dim(rn) for rn in right_neighbors]
+    else
+        dim_right_neighbors = [1]
+    end
+
+    # PRE OPTIMIZATION SETUP DONE!
+
+    # pass everything as scalars so that we can GPUify them later!
+    dim_left_index = dim(left_index)
+    dim_right_index = dim(right_index)
+    composite_tensor_arr = Array(composite_tensor.tensor)
+
+    # call the objective function
+    f(M, p) = overlap(M, p, composite_tensor_arr, psi_arr, i, eta_dag_arr, dim_left_index, dim_right_index, dim_left_neighbors, dim_right_neighbors; Λ_cutoff = λ_cutoff, kwargs...)
+
+    grad_f(M, p) = project(M, p, grad_mat_overlap(M, p, composite_tensor_arr, psi_arr, i, eta_dag_arr, dim_left_index, dim_right_index, dim_left_neighbors, dim_right_neighbors; kwargs...))
+
+    M = manifold(dim(combined_index), dim(combined_index), manifold_field)
+
+    # initialize the optimizer
+    if initial_p0 == &quot;RS&quot;
+        M1 = manifold(dim(left_index), dim(left_index), manifold_field)
+        M2 = manifold(dim(right_index), dim(right_index), manifold_field)
+        p0 = kron(rand(M1), rand(M2))
+    elseif initial_p0 == &quot;RE&quot;
+        p0 = rand(M)
+    elseif initial_p0 == &quot;I&quot;
+        # id_m = Matrix((1.0+0.0im)I, dim(left_index), dim(right_index))
+        # p0 = kron(id_m, id_m)
+        p0 = Matrix((1.0 + 0.0im)I, dim(combined_index), dim(combined_index))
+    end
+
+    res = opt(M, f, grad_f, p0; return_state = true, kwargs...)
+
+    u_kij = ITensor(get_solver_result(res), combined_index&#39;, combined_index)
+
+    return u_kij, res
+
+end</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../api/utilities.html">« Utility functions</a><a class="docs-footer-nextpage" href="gpu_integration.html">GPU Integration »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.20.0 on <span class="colophon-date" title="Thursday 12 November 2026 18:13">Thursday 12 November 2026</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
