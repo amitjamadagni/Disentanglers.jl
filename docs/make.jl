@@ -29,7 +29,7 @@ makedocs(;
     modules = [Disentanglers],
     checkdocs_ignored_modules = [Disentanglers.TensorSketch],
     sitename = "Disentanglers.jl",
-    repo = Documenter.Remotes.GitLab("code.ornl.gov", "cgg", "Disentanglers.jl"),
+    repo = Documenter.Remotes.GitHub("amitjamadagni", "Disentanglers.jl"),
     # remotes = nothing,
     checkdocs = :exports,
     pages = [

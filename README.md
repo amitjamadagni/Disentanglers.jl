@@ -14,7 +14,7 @@ Julia package with a collection of tools to optimize tensor network representati
 - Clone the package
 
 ```
-git clone https://code.ornl.gov/cgg/Disentanglers.jl.git
+git clone https://github.com/amitjamadagni/Disentanglers.jl.git
 ```
 
 - Install Disentanglers.jl via the Julia REPL:
@@ -35,10 +35,10 @@ The package is built on the following packages
 - [ITensorMPS.jl](https://github.com/ITensor/ITensorMPS.jl),
 - [Manifolds.jl](https://github.com/JuliaManifolds/Manifolds.jl),
 - [Manopt.jl](https://github.com/JuliaManifolds/Manopt.jl),
-- [DifferentiationInterface.jl](https://github.com/JuliaDiff/DifferentiationInterface.jl)(mainly [Zygote.jl](https://github.com/FluxML/Zygote.jl))
-- [TensorSketch](https://github.com/kjslag/fastDisentangle/blob/main/fastDisentangle.jl)
-- [Documenter.jl](https://github.com/juliadocs/documenter.jl) (for documentation)
-- [Runic.jl](https://github.com/fredrikekre/Runic.jl) (for code formatting)
+- [DifferentiationInterface.jl](https://github.com/JuliaDiff/DifferentiationInterface.jl) (mainly [Zygote.jl](https://github.com/FluxML/Zygote.jl)),
+- [TensorSketch](https://github.com/kjslag/fastDisentangle/blob/main/fastDisentangle.jl),
+- [Documenter.jl](https://github.com/juliadocs/documenter.jl) (for documentation),
+- [Runic.jl](https://github.com/fredrikekre/Runic.jl) (for code formatting).
 
 The disentangling algorithms are designed to return `ITensor` data structures to better integrate into the Julia ecosystem, however the internals are completely pure Julia multi-dimensional arrays.
 
@@ -56,7 +56,7 @@ These represent a sample and can be extended to other scenarios, or other repres
 Documentation can be accessed by cloning the `gh-pages` branch.
 
 ```
-git clone -b gh-pages https://code.ornl.gov/cgg/Disentanglers.jl.git
+git clone -b gh-pages https://github.com/amitjamadagni/Disentanglers.jl.git
 ```
 
 Once cloned, the documentation can be accessed by opening the `Disentanglers.jl/index.html` file in the browser.

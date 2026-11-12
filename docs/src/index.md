@@ -17,7 +17,7 @@ Julia package with a collection of tools to optimize tensor network representati
 - Clone the package
 
 ```
-git clone https://code.ornl.gov/cgg/Disentanglers.jl.git
+git clone https://github.com/amitjamadagni/Disentanglers.jl.git
 ```
 
 - Install Disentanglers.jl via the Julia REPL:
