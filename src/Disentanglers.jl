@@ -11,12 +11,15 @@ using ITensors
 using ITensorMPS
 using Zygote
 using ChainRules
+using ChainRulesCore
 using Manifolds
 using Manopt
 using Statistics
 using DifferentiationInterface
 using LinearAlgebra
 using Accessors
+using CUDA
+using Adapt
 
 # --------------- Include files with exports in them  ---------------
 

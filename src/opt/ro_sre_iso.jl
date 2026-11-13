@@ -57,9 +57,10 @@ function second_renyi_entropy(M, W, composite_tensor_arr, dim_left_index, dim_ri
     rho_contract = composite_tensor_arr_p_dag * composite_tensor_arr_p
 
     #### contract the left indices
-    rho_sq_contract = rho_contract * rho_contract
+    # rho_sq_contract = rho_contract * rho_contract
 
-    return -log(real(tr(rho_sq_contract)))
+    # return -log(real(tr(rho_sq_contract)))
+    return -log(real(sum(rho_contract .* rho_contract')))
 
 end
 
@@ -138,7 +139,7 @@ tensor network object across the specified cut.
 
 See also: [`isometry_ro_are`](@ref), [`isometry_ts`](@ref)
 """
-function isometry_ro_sre(composite_object, left_index, right_index, left_neighbors, right_neighbors; gradient_free_solver = false, manifold = Stiefel, manifold_field = ℂ, opt = quasi_Newton, initial_p0 = "RS", p0_val = nothing, kwargs...)
+function isometry_ro_sre(composite_object, left_index, right_index, left_neighbors, right_neighbors; gradient_free_solver = false, manifold = Stiefel, manifold_field = ℂ, opt = quasi_Newton, initial_p0 = "RS", p0_val = nothing, cuda_flag = false, kwargs...)
 
     ################## TODO: Include options to inflate the left and right index
 
@@ -178,6 +179,9 @@ function isometry_ro_sre(composite_object, left_index, right_index, left_neighbo
     dim_right_index = dim(right_index)
     composite_tensor_arr = Array(composite_tensor.tensor)
 
+    if cuda_flag == true
+        composite_tensor_arr = adapt(CuArray, composite_tensor_arr)
+    end
 
     # call the objective function
     f(M, p) = second_renyi_entropy(M, p, composite_tensor_arr, dim_left_index, dim_right_index, dim_left_neighbors, dim_right_neighbors; kwargs...)
@@ -201,6 +205,12 @@ function isometry_ro_sre(composite_object, left_index, right_index, left_neighbo
     end
 
     p_id = Matrix((1.0 + 0.0im)I, dim(combined_index), dim(combined_index))
+
+    if cuda_flag == true
+        p0 = adapt(CuArray, p0)
+        p_id = adapt(CuArray, p_id)
+    end
+
     initial_objective_val = f(M, p_id)
 
     if gradient_free_solver == true

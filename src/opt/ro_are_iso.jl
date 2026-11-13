@@ -1,13 +1,33 @@
 using ChainRules
+using ChainRulesCore
 
 # This is required for performing differentiation involving SVD (real singular values)
 # https://discourse.julialang.org/t/automatic-differentiation-of-complex-matrix-fails/75733/8
-function ChainRules.rrule(::typeof(svd), X::AbstractMatrix{<:Complex})
-    F = svd(X)
-    svd_pullback(ȳ) = ChainRules._svd_pullback(ȳ, F)
-    return F, svd_pullback
-end
+# function ChainRules.rrule(::typeof(svd), X::AbstractMatrix{<:Complex})
+#     F = svd(X)
+#     svd_pullback(ȳ) = ChainRules._svd_pullback(ȳ, F)
+#     return F, svd_pullback
+# end
 
+# `rrule` must be adpated for GPUs.
+function ChainRulesCore.rrule(::typeof(LinearAlgebra.svdvals), A::CuArray)
+
+    F = svd(A)
+    S, U, V = F.S, F.U, F.V
+
+    function svdvals_pullback(ds)
+
+        ds_gpu = cu(ds)
+
+        dA = U*LinearAlgebra.Diagonal(ds_gpu)*V'
+
+        return (NoTangent(), dA)
+
+    end
+
+    return S, svdvals_pullback
+
+end
 
 """
     alpha_renyi_entropy(M, W, composite_tensor_arr, dim_left_index, dim_right_index,
@@ -160,7 +180,7 @@ network object across the specified cut.
 
 See also: [`isometry_ro_sre`](@ref), [`isometry_ts`](@ref)
 """
-function isometry_ro_are(composite_object, left_index, right_index, left_neighbors, right_neighbors; gradient_free_solver = false, entropy_pow = 1, δ_ent = 1.0e-8, renormalize = false, manifold = Stiefel, manifold_field = ℂ, opt = quasi_Newton, initial_p0 = "RS", p0_val = nothing, inflate_l = false, inflate_lf = 1, inflate_r = false, inflate_rf = 1, kwargs...)
+function isometry_ro_are(composite_object, left_index, right_index, left_neighbors, right_neighbors; gradient_free_solver = false, entropy_pow = 1, δ_ent = 1.0e-8, renormalize = false, manifold = Stiefel, manifold_field = ℂ, opt = quasi_Newton, initial_p0 = "RS", p0_val = nothing, cuda_flag = false, inflate_l = false, inflate_lf = 1, inflate_r = false, inflate_rf = 1, kwargs...)
 
 
     ################## TODO: Include options to inflate the left and right index
@@ -201,6 +221,10 @@ function isometry_ro_are(composite_object, left_index, right_index, left_neighbo
     dim_right_index = dim(right_index)
     composite_tensor_arr = Array(composite_tensor.tensor)
 
+    if cuda_flag == true
+        composite_tensor_arr = adapt(CuArray, composite_tensor_arr)
+    end
+
     # call the objective function
     f(M, p) = alpha_renyi_entropy(M, p, composite_tensor_arr, dim_left_index, dim_right_index, dim_left_neighbors, dim_right_neighbors; entropy_pow = entropy_pow, δ_ent = δ_ent, renormalize = renormalize, kwargs...)
 
@@ -223,6 +247,12 @@ function isometry_ro_are(composite_object, left_index, right_index, left_neighbo
     end
 
     p_id = Matrix((1.0 + 0.0im)I, dim(combined_index), dim(combined_index))
+
+    if cuda_flag == true
+        p0 = adapt(CuArray, p0)
+        p_id = adapt(CuArray, p_id)
+    end
+
     initial_objective_val = f(M, p_id)
 
     if gradient_free_solver == true
